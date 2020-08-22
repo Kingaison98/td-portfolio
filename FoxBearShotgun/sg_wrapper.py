@@ -1,4 +1,4 @@
-import shotgun_api3_local
+import shotgun_api
 
 # The Primary Text Keys are the field names to check when not defined.
 # For example, calling sg.Project("my_project") will be the same as sg.Project(code = "my_project")
