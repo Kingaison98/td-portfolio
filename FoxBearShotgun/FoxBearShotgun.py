@@ -5,17 +5,13 @@ import sg_wrapper
 '''
 Shotgun API Library for Finn & Beau Thesis project
 
-These functions were designed for use both within Maya as a utility library, as well as the api driving the FoxBearFrontnd
+Pass this library in as the api module to be imported into FoxBearFrontEnd to connect to shotgun
 
 '''
 
 
 h = hashlib.sha256()
-sg = sg_wrapper.Shotgun("https://lmu.shotgunstudio.com","FoxAPI","yyvtCefciiqtbrddi#cv1tsrc")
-fox = sg.Project(name = "Fox")
-shots = sg.Shots(project = fox)
-tasks = sg.Tasks(project = fox)
-shotDir = "//medusa/Fox/Shots"
+sg = sg_wrapper.Shotgun(INPUT_url, INPUT_scriptname, INPUT_scriptkey)
 
 '''
 Returns: A list of all the tasks in the project formatted for FoxBearFrontEnd.

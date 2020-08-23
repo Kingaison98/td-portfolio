@@ -1,6 +1,16 @@
+from random import *
+
 def getAllTasks():
-    return [["This is the first test task","This is the task type","This is the artist space","This is the completion rate","0010"],
-            ["Test02","TestType02","TestArtist02","TestComp02","0020"],["Test03","TestType03","TestArtist03","TestComp03","0030"],["4","4A","4B","4C","0040"]]
+    taskList = []
+    for i in range (1, 9):
+        taskName = "Task{0}".format(i)
+        taskType = ["Layout","Animation","FX","Comp"][randrange(3)]
+        status = ["Waiting","Ready","Incomplete","Complete"][randrange(4)]
+        artist = ["James","Sarah","Alex"][randrange(2)]
+        taskID = "00{0}0".format(i)
+        task = [taskName, taskType, artist, status, taskID]
+        taskList.append(task)
+    return taskList
 
 class MockSG():
 

@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-import FoxBearMockApi as api
+import FoxBearMockApi as api    #C
 
 class TaskListModel(QAbstractTableModel):
     def __init__(self, ui, parent, tasks, *args):
@@ -39,14 +39,15 @@ class TaskListModel(QAbstractTableModel):
                              break
                         if categorySatisfied == False:
                            valid = False
+                           break
                 if valid == False:
                     filteredItems.append(x)
         for x in filteredItems:
-            print("Removing", x)
             xIndex = self.dataTable.index(x)
             self.removeRow(xIndex, QModelIndex())
             self.dataTable.remove(x)
-        #print(self.dataTable)
+        print("Filter List: {0}".format(self.ui.filterList))
+        print("Filtered items: {0}".format(filteredItems))
         self.layoutChanged.emit()
 
     def rowCount(self, QModelIndex = None):
@@ -105,6 +106,7 @@ class FoxBearUI(QWidget):
 
         self.taskList = []
         self.filterList = {"artist": [], "status": [], "type": []}
+        self.menuList = {"artist": [], "status": [], "type": []}
         self.selectedID = None
         self.taskTable = QTableView(self, cornerButtonEnabled=False)
         self.taskModel = TaskListModel(self, self.taskTable, self.taskList)
@@ -119,15 +121,11 @@ class FoxBearUI(QWidget):
 
     def initLayout(self):
         self.setWindowTitle("Vernal Production Sheet")
-        self.layout = QGridLayout()
-        self.layout.setVerticalSpacing(10)
-        self.layout.setColumnStretch(0, 3)
-        self.layout.setColumnMinimumWidth(0, 400)
+        self.layout = QVBoxLayout()
         self.setLayout(self.layout)
-        self.layout.addWidget(self.taskTable, 0, 0, Qt.AlignCenter)
+        self.layout.addWidget(self.taskTable)
 
     def initButtons(self):
-        buttonArea = QGroupBox()
         buttonLayout = QHBoxLayout()
         self.refreshBtn = QPushButton("Refresh Tasks")
         self.refreshBtn.pressed.connect(self.refreshTasks)
@@ -135,32 +133,37 @@ class FoxBearUI(QWidget):
         self.downloadBtn.pressed.connect(self.downloadFile)
         buttonLayout.addWidget(self.refreshBtn)
         buttonLayout.addWidget(self.downloadBtn)
-        buttonArea.setLayout(buttonLayout)
-        self.layout.addWidget(buttonArea, 1, 0, Qt.AlignCenter)
+        self.layout.addLayout(buttonLayout)
 
     def initMenus(self):
+        try:
+            menu = self.mainMenu
+            menu.clear()
+            menu.deleteLater()
+        except:
+            pass
         self.mainMenu = QMenuBar()
+        self.loadArtistMenu(self.menuList.get("artist"))
+        self.loadStatusMenu(self.menuList.get("status"))
+        self.loadTypeMenu(self.menuList.get("type"))
         self.layout.setMenuBar(self.mainMenu)
-        self.loadArtistMenu(self.filterList.get("artist"))
-        self.loadStatusMenu(self.filterList.get("status"))
-        self.loadTypeMenu(self.filterList.get("type"))
+
 
     def refreshTasks(self):
         self.taskList = api.getAllTasks()
-        for x in self.mainMenu.actions():
-            self.mainMenu.removeAction(x)
         self.loadTasks()
 
 
     def loadTasks(self):
         self.filterList = {"artist": [], "status": [], "type": []}
+        self.menuList = {"artist": [], "status": [], "type": []}
         for task in self.taskList:
-            if not task[1] in self.filterList["type"]:
-                self.filterList["type"].append(task[1])
-            if not task[2] in self.filterList["artist"]:
-                self.filterList["artist"].append(task[2])
-            if not task[3] in self.filterList["status"]:
-                self.filterList["status"].append(task[3])
+            if not task[1] in self.menuList["type"]:
+                self.menuList["type"].append(task[1])
+            if not task[2] in self.menuList["artist"]:
+                self.menuList["artist"].append(task[2])
+            if not task[3] in self.menuList["status"]:
+                self.menuList["status"].append(task[3])
         self.initMenus()
 
     def loadArtistMenu(self, artistList):
