@@ -12,6 +12,8 @@ Pass this library in as the api module to be imported into FoxBearFrontEnd to co
 
 h = hashlib.sha256()
 sg = sg_wrapper.Shotgun(INPUT_url, INPUT_scriptname, INPUT_scriptkey)
+project = (INPUT_projectname)
+
 
 '''
 Returns: A list of all the tasks in the project formatted for FoxBearFrontEnd.
@@ -19,7 +21,7 @@ The format returned is as follows
 ['Entity Code', 'Content', 'Assignees', 'Status', 'ID']
 '''
 def getAllTasks():
-    tasks = sg.Tasks(project = fox)
+    tasks = sg.Tasks(project = project)
     frontEndForm = []
     for task in tasks:
         newForm = []
