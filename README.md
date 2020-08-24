@@ -1,5 +1,5 @@
 # td-portfolio
-A collection of production/pipeline tools to demonstrate experience.
+A collection of production/pipeline tools to demonstrate my experience with UI/UX design and familiarity with Maya, Python, PyQt, and Unreal engine.
 
 ## FoxBearShotgun
 
