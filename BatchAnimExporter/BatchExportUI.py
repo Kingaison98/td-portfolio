@@ -40,6 +40,7 @@ class BatchExportDialog(QtWidgets.QDialog):
 
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
         
+        self.setWindowTitle("Batch Animation Export")
         self.setMinimumWidth(400)
         self.setMinimumHeight(100)
         
